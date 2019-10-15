@@ -20,13 +20,15 @@ CREATE TABLE IF NOT EXISTS subject (
     status INTEGER,
     plano_ensino VARCHAR(200),
     carga_horaria INTEGER,
-    id_coordenador INTEGER NOT NULL
+    id_coordenador INTEGER NULL
         CONSTRAINT teacher REFERENCES teacher (id_teacher)
 );
 """
 
+
 def connect_database():
     return sqlite3.connect("database.db")
+
 
 def create_database():
     with closing(connect_database()) as con, closing(con.cursor()) as cursor:
@@ -46,30 +48,31 @@ def database_clear():
         con.commit()
 
 
-def execute(sql, values = None):
+def execute(sql, values=None):
     with closing(connect_database()) as con, closing(con.cursor()) as cursor:
-        if values != None:
+        if values:
             cursor.execute(sql, values)
         else:
             cursor.execute(sql)
-        
+
         con.commit()
 
-def consult(sql: str, values = None):
+
+def consult(sql: str, values=None):
     with closing(connect_database()) as con, closing(con.cursor()) as cursor:
-        if values != None:
+        if values:
             cursor.execute(sql, values)
         else:
             cursor.execute(sql)
 
         result = cursor.fetchall()
-        if result == None:
+        if not result:
             return False
 
         return result
 
 
-def register(sql: str, values = None):
+def register(sql: str, values=None):
     with closing(connect_database()) as con, closing(con.cursor()) as cursor:
         if values:
             cursor.execute(sql, values)

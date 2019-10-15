@@ -15,7 +15,7 @@ def to_dic(rows: list) -> list:
 
 def consult_single_teacher(id: str):
     sql = "SELECT * FROM teacher WHERE id_teacher = ?"
-    result = database.consult(sql, (id))
+    result = database.consult(sql, (id, ))
     if result:
         return to_dic(result)[0]
 
@@ -30,9 +30,11 @@ def consult_all_teacher():
 
     return []
 
+
 def register_teacher(id, nome):
     sql = "INSERT INTO teacher(id_teacher, nome) VALUES (?, ?)"
     database.register(sql, (id, nome))
+
 
 def delete_teacher(id):
     sql = "DELETE FROM teacher WHERE id_teacher = ?"
@@ -41,7 +43,7 @@ def delete_teacher(id):
 
 
 def update_teacher(id, nome):
-    sql = "UPDATE teacher SET nome = ? WHERE id = ?"
+    sql = "UPDATE teacher SET nome = ? WHERE id_teacher = ?"
     database.execute(sql, (nome, id))
     return True
 
@@ -84,7 +86,7 @@ def del_teacher(id_teacher):
 
 @teacher_app.route('/professores/<int:id_teacher>', methods=["PUT"])
 def change_teacher(id_teacher):
-    if not 'nome' in request.json.keys():
+    if 'nome' not in request.json.keys():
         return jsonify({'erro': 'professor sem nome'}), 404
 
     if consult_single_teacher(id_teacher):

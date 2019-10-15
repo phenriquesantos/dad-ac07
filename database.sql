@@ -4,7 +4,7 @@ CREATE TABLE IF NOT EXIST teacher (
 );
 
 CREATE TABLE IF NOT EXIST student (
-    id_stundent INTEGER PRIMARY KEY,
+    id_student INTEGER PRIMARY KEY,
     nome VARCHAR(100)
 );
 
@@ -14,6 +14,6 @@ CREATE TABLE IF NOT EXIST subject (
     status INTEGER,
     plano_ensino VARCHAR(200),
     carga_horaria INTEGER,
-    id_coordenador INTEGER NOT NULL
+    id_coordenador INTEGER NULL
         CONSTRAINT teacher REFERENCES teacher (id_teacher)
 );
